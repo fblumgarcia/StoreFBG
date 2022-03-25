@@ -20,13 +20,15 @@ public class Customer extends User{
         String msg = null;//Inicializa variable mensaje
         if(true==val.valEmail(email)){
             if(password.equals(password2)){//Compara las dos contraseñas
-                msg="Bienvenido "+name+" a STOREFBG";
-                boolean userCreated=true;
-            }else{
-                msg="No coinciden las contraseñas";
+                DataBase create=new DataBase();//Se llama la creación del usuario
+                if(create.CreateUser(name,email,password)==true){//Verifica que haya salido todo bien
+                    msg="Bienvenido "+name+" a STOREFBG";
+                }
+            }else{//Si las 2 contraseñas no son iguales
+                msg="Verífique datos ingresados";
             }
-        }else{
-            msg="Correo ingresado es incorrecto";
+        }else{//Si da un correo que no tiene la forma que es
+            msg="Verífique datos ingresados";
         }        
         return msg;
     }   

@@ -6,6 +6,7 @@ package ui;
 
 import javax.swing.JOptionPane;
 import model.Customer;
+import model.DataBase;
 
 /**
  *
@@ -138,10 +139,15 @@ public class UISignup extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void registryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_registryActionPerformed
-        char[] passw1=pass1In.getPassword();
+        DataBase created=new DataBase();
+        char[] passw1=pass1In.getPassword();//Se obtiene password en characters
         char[] passw2=pass2In.getPassword();
-        Customer registry=new Customer(emailIn.getText(),new String(passw1)); 
-        JOptionPane.showMessageDialog(null,registry.Registry(nameIn.getText(),new String(passw2)));
+        Customer registry=new Customer(emailIn.getText(),new String(passw1)); //Se llama la clase de customer
+        JOptionPane.showMessageDialog(null,registry.Registry(nameIn.getText(),new String(passw2)));//Se imprime un cuadro de texto con lo que salga
+        if(registry.Registry(nameIn.getText(),new String(passw2)).equals("Verífique datos ingresados")){//Verifica si sale este mensaje
+        } else {
+            dispose();//Al aceptarlo se cierra la ventana
+        }
     }//GEN-LAST:event_registryActionPerformed
 
     /**

@@ -13,7 +13,7 @@ import model.User;
  */
 public class UILogin extends javax.swing.JFrame {
 
-    UISignup signup;
+    UISignup signup;UIStore store;
     public UILogin() {
         initComponents();
     }
@@ -117,13 +117,18 @@ public class UILogin extends javax.swing.JFrame {
 
     private void signUpActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_signUpActionPerformed
        signup=new UISignup();
-        signup.setVisible(true);
+       signup.setVisible(true);//Hace visible ventana de registro UISignup
     }//GEN-LAST:event_signUpActionPerformed
 
     private void loginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loginActionPerformed
         char[] passw1=password.getPassword();
-        User usLog=new User(user.getText(),new String(passw1));
-        JOptionPane.showMessageDialog(null,usLog.Login());
+        User usLog=new User(user.getText(),new String(passw1));        
+        JOptionPane.showMessageDialog(null,usLog.Login()[2]);
+        if(usLog.Login()[0]!=null){//Si se ha encontrado el usuario 
+            store=new UIStore(usLog.Login()[0],usLog.Login()[1],usLog.Login()[3]);
+            store.setVisible(true);
+            dispose();
+        }
     }//GEN-LAST:event_loginActionPerformed
 
     /**
