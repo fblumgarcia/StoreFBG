@@ -35,7 +35,7 @@ public class User {
         String[] msg={null,null,null,null};
         Validations val=new Validations();
         DataBase log=new DataBase();
-        String[] user=log.LoginUser(email, password);
+        String[] user=log.LoginUser(email);
         if(true==val.valEmail(email)){
             if(user[0]!=null){//Verifica que exista ese usuario en la DB
                 if(password.equals(user[2])){//Verifica que la contraseña coincida
