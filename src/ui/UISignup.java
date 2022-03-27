@@ -6,7 +6,6 @@ package ui;
 
 import javax.swing.JOptionPane;
 import model.Customer;
-import model.DataBase;
 
 /**
  *
@@ -43,13 +42,13 @@ public class UISignup extends javax.swing.JFrame {
 
         jLabel1.setText("Creación de Usuario");
 
-        jLabel2.setText("Nombre");
+        jLabel2.setText("NOMBRE");
 
-        jLabel3.setText("Email");
+        jLabel3.setText("EMAIL");
 
-        jLabel4.setText("Contraseña");
+        jLabel4.setText("CONTRASEÑA");
 
-        jLabel5.setText("Repite la contraseña");
+        jLabel5.setText("REPITE LA CONTRASEÑA");
 
         nameIn.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         nameIn.setPreferredSize(new java.awt.Dimension(150, 40));
@@ -139,15 +138,19 @@ public class UISignup extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void registryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_registryActionPerformed
-        DataBase created=new DataBase();
         char[] passw1=pass1In.getPassword();//Se obtiene password en characters
         char[] passw2=pass2In.getPassword();
-        Customer registry=new Customer(emailIn.getText(),new String(passw1)); //Se llama la clase de customer
-        String msg=registry.Registry(nameIn.getText(),new String(passw2));
-        JOptionPane.showMessageDialog(null,msg);//Se imprime un cuadro de texto con lo que salga
-        if(msg.equals("Verífique datos ingresados")){//Verifica si sale este mensaje
-        } else {
-            dispose();//Al aceptarlo se cierra la ventana
+        //Validación para que ingrese todos los valores
+        if(emailIn.getText().equals("")||new String(passw1).equals("")||new String(passw2).equals("")||nameIn.getText().equals("")){
+            JOptionPane.showMessageDialog(null,"Por favor ingrese todos los valores");
+        }else{
+            Customer registry=new Customer(emailIn.getText(),new String(passw1)); //Se llama la clase de customer
+            String msg=registry.Registry(nameIn.getText(),new String(passw2));
+            JOptionPane.showMessageDialog(null,msg);//Se imprime un cuadro de texto con lo que salga
+            if(msg.equals("Verífique datos ingresados")){//Verifica si sale este mensaje
+            } else {
+                dispose();//Al aceptarlo se cierra la ventana
+            }
         }
     }//GEN-LAST:event_registryActionPerformed
 

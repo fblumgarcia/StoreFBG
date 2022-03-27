@@ -5,6 +5,7 @@
 package model;
 
 import com.mysql.cj.jdbc.Blob;
+import java.io.FileInputStream;
 import java.sql.Connection;
 import java.io.IOException;
 import java.sql.DriverManager;
@@ -12,8 +13,10 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import ui.UISProducts;
 
 /**
  *
@@ -24,14 +27,21 @@ public class DataBase {
    private final String usDB="root";
    private final String pwDB="";
    
-   //Trabaja la tabla de los usuarios
-    public boolean CreateUser(String name,String email,String password){//Se hace la validación de la creación del usuario
-        boolean isCreated=false;
-        try {
+   public boolean tryLibrary(){
+       boolean tryLibrary=false;
+       try {
             Class.forName("com.mysql.cj.jdbc.Driver");//Verifica libreria instalada
+            tryLibrary=true;
+            
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(DataBase.class.getName()).log(Level.SEVERE, null, ex);
         }
+       return tryLibrary;
+   }
+   //Trabaja la tabla de los usuarios
+    public boolean CreateUser(String name,String email,String password){//Se hace la validación de la creación del usuario
+        boolean isCreated=false;
+        tryLibrary();
         try(Connection conn=DriverManager.getConnection(dir,usDB,pwDB)){
             PreparedStatement stmt = conn.prepareStatement("INSERT INTO users (name,email,password,usertype) VALUES ('"+name+"','"+email+"','"+password+"','CLIENTE')");
             stmt.executeUpdate();
@@ -44,17 +54,14 @@ public class DataBase {
     }
     public String[] LoginUser(String email){
         String[] user={null,null,null,null};
-        try {
-            Class.forName("com.mysql.cj.jdbc.Driver");//Verifica libreria instalada
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(DataBase.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        tryLibrary();
         try(Connection conn=DriverManager.getConnection(dir,usDB,pwDB)){
             Statement stmt = conn.createStatement();
             ResultSet rs = stmt.executeQuery("SELECT * FROM users WHERE email='"+email+"'");
             rs.next();
             user[0]=rs.getString("name");user[1]=rs.getString("email");
             user[2]=rs.getString("password");user[3]=rs.getString("usertype");
+            conn.close();
         } catch (SQLException ex) {        
            Logger.getLogger(DataBase.class.getName()).log(Level.SEVERE, null, ex);
        }    
@@ -62,15 +69,13 @@ public class DataBase {
     }
     
     //Trabaja la tabla de productos
-    public boolean CreateProduct(int id,String name,int price,int quantity,Blob image,String description,String category){
+    public boolean CreateProduct(String name,int price,int quantity,FileInputStream image,String description){
         boolean isCreated=false;
-        try {
-            Class.forName("com.mysql.cj.jdbc.Driver");//Verifica libreria instalada
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(DataBase.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        tryLibrary();
         try(Connection conn=DriverManager.getConnection(dir,usDB,pwDB)){
-            PreparedStatement stmt = conn.prepareStatement("INSERT INTO products (id,name,price,quantity,image,description,category) VALUES ('"+id+"','"+name+"','"+price+"','"+quantity+"'"+image+"','"+description+"','"+category+"')");
+            PreparedStatement stmt = conn.prepareStatement("INSERT INTO products (name,price,quantity,image,description) VALUES (?,?,?,?,?)");
+            stmt.setString(1, name);stmt.setString(5, description);//Guarda la info
+            stmt.setInt(2, price);stmt.setInt(3, quantity);stmt.setBlob(4, image);//Pasa el FileInputStream a blob
             stmt.executeUpdate();
             conn.close();
             isCreated=true;
@@ -79,4 +84,21 @@ public class DataBase {
         }
         return isCreated;
     }
+    public void SearchProduct(String name){
+        tryLibrary();
+        UISProducts listprod=new UISProducts();
+        try(Connection conn=DriverManager.getConnection(dir,usDB,pwDB)){
+            Statement stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT * FROM products WHERE name='"+name+"'");
+            rs.next();
+            do{
+                listprod.OrganiceInfoTable(rs.getString("id"),rs.getString("name"),rs.getString("price"),rs.getString("quantity"),rs.getString("description"));
+            }while(rs.next());
+            conn.close();
+        }  catch (SQLException ex) {
+            Logger.getLogger(DataBase.class.getName()).log(Level.SEVERE, null, ex);
+       }
+    }
+
+    
 }

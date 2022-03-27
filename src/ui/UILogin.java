@@ -40,15 +40,17 @@ public class UILogin extends javax.swing.JFrame {
 
         user.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         user.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        user.setText("fbg@user");
 
         password.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         password.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        password.setText("123");
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        jLabel1.setText("Usuario");
+        jLabel1.setText("EMAIL");
 
         jLabel2.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        jLabel2.setText("Contraseña");
+        jLabel2.setText("CONTRASEÑA");
 
         jLabel3.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         jLabel3.setText("FBG Store");
@@ -79,7 +81,7 @@ public class UILogin extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(user, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, 95, Short.MAX_VALUE)
+                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 95, Short.MAX_VALUE)
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(login)
@@ -122,12 +124,17 @@ public class UILogin extends javax.swing.JFrame {
 
     private void loginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loginActionPerformed
         char[] passw1=password.getPassword();
-        User usLog=new User(user.getText(),new String(passw1));        
-        JOptionPane.showMessageDialog(null,usLog.Login()[2]);
-        if(usLog.Login()[0]!=null){//Si se ha encontrado el usuario 
-            store=new UIStore(usLog.Login()[0],usLog.Login()[1],usLog.Login()[3]);
-            store.setVisible(true);
-            dispose();
+        //Validación de que llene todos los datos
+        if(user.getText().equals("")||new String(passw1).equals("")){
+            JOptionPane.showMessageDialog(null,"Por favor ingrese todos los datos");
+        }else{
+            User usLog=new User(user.getText(),new String(passw1));//llama clase de user        
+            JOptionPane.showMessageDialog(null,usLog.Login()[2]);
+            if(usLog.Login()[0]!=null){//Si se ha encontrado el usuario 
+                store=new UIStore(usLog.Login()[0],usLog.Login()[1],usLog.Login()[3]);
+                store.setVisible(true);
+                dispose();
+            }
         }
     }//GEN-LAST:event_loginActionPerformed
 

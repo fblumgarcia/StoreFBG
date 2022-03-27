@@ -4,7 +4,14 @@
  */
 package ui;
 
-import com.mysql.cj.jdbc.Blob;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import model.DataBase;
 
 /**
@@ -12,7 +19,7 @@ import model.DataBase;
  * @author fblum
  */
 public class UIMPcreate extends javax.swing.JPanel {
-
+    FileInputStream image;
     /**
      * Creates new form UIMPcreate
      */
@@ -29,8 +36,6 @@ public class UIMPcreate extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        idTF = new javax.swing.JTextField();
-        jLabel1 = new javax.swing.JLabel();
         categoryTB = new javax.swing.JComboBox<>();
         nameTF = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
@@ -43,21 +48,27 @@ public class UIMPcreate extends javax.swing.JPanel {
         register = new javax.swing.JButton();
         selectImg = new javax.swing.JButton();
 
-        idTF.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-
-        jLabel1.setText("ID");
-
-        categoryTB.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Categoría", "Televisor", "Celular", "Computador", "Nevera", "Lavadora" }));
+        categoryTB.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "SELECCIONE", "TELEVISOR", "CELULAR", "COMPUTADOR" }));
 
         nameTF.setHorizontalAlignment(javax.swing.JTextField.CENTER);
 
         jLabel2.setText("NOMBRE");
 
         priceTF.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        priceTF.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                priceTFKeyTyped(evt);
+            }
+        });
 
         jLabel3.setText("PRECIO");
 
         quantityTF.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        quantityTF.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                quantityTFKeyTyped(evt);
+            }
+        });
 
         jLabel4.setText("CANTIDAD");
 
@@ -91,11 +102,9 @@ public class UIMPcreate extends javax.swing.JPanel {
                             .addComponent(register, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                        .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addGroup(layout.createSequentialGroup()
-                                            .addComponent(jLabel2)
-                                            .addGap(103, 103, 103)))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(jLabel2)
+                                        .addGap(103, 103, 103))
                                     .addGroup(layout.createSequentialGroup()
                                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                             .addComponent(jLabel3)
@@ -104,8 +113,7 @@ public class UIMPcreate extends javax.swing.JPanel {
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(quantityTF, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(priceTF, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(nameTF, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(idTF, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(nameTF, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addGap(0, 226, Short.MAX_VALUE)))
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
@@ -126,10 +134,7 @@ public class UIMPcreate extends javax.swing.JPanel {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(113, 113, 113)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(idTF, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel1)
-                    .addComponent(categoryTB, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(categoryTB, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(nameTF, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -158,23 +163,59 @@ public class UIMPcreate extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void selectImgActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_selectImgActionPerformed
-        UIMPCSelectImg selecImg=new UIMPCSelectImg();
-        selecImg.setVisible(true);
+        JFileChooser imgChooser=new JFileChooser();//Se inicializa el filechooser
+        imgChooser.setCurrentDirectory(new java.io.File("C:\\Users\\fblum\\Documents\\Proyectos\\StoreFBG\\src\\images"));
+        imgChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);//Selecciona sólo los archivos
+        FileNameExtensionFilter imgFilter=new FileNameExtensionFilter("JPEG file", "jpg", "jpeg");//Sólo se puede seleccionar este tipo de archivo
+        imgChooser.setFileFilter(imgFilter);
+        int result=imgChooser.showOpenDialog(this);//Para saber que botón selecciona
+        if(result!=JFileChooser.CANCEL_OPTION){
+            File img=imgChooser.getSelectedFile();//Devuelve el objeto seleccionado
+            try {
+                image=new FileInputStream(String.valueOf(img));//Convierte la ruta de la imagen en fileinputstream
+            } catch (FileNotFoundException ex) {
+                Logger.getLogger(UIMPcreate.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
     }//GEN-LAST:event_selectImgActionPerformed
 
     private void registerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_registerActionPerformed
         DataBase dataBase=new DataBase();
-        int id=Integer.valueOf(idTF.getText());int price=Integer.valueOf(priceTF.getText());int quantity=Integer.valueOf(quantityTF.getText());
-        String name=nameTF.getText();String category=(String) (categoryTB.getSelectedItem());String description=descriptionTF.getText();
-        Blob image;
+        int price=-1;int quantity=-1;boolean isCreated=false;      
+        String category=(categoryTB.getSelectedItem().toString().toUpperCase());String name=category+" "+nameTF.getText().toUpperCase();String description=descriptionTF.getText().toUpperCase();
+        if(quantityTF.getText().equals("")||priceTF.getText().equals("")||name.equals("")||category.equals("")||description.equals("SELECCIONE")){
+            JOptionPane.showMessageDialog(null,"Ingrese todos los datos");
+        }else{
+            price=Integer.valueOf(priceTF.getText());quantity=Integer.valueOf(quantityTF.getText());
+            isCreated=dataBase.CreateProduct(name, price, quantity, image, description);//Se envía con este procedimiento
+            if(isCreated==true){//Si se guarda en la DB
+                JOptionPane.showMessageDialog(null,"Se ha creado el producto");
+            }else{
+                JOptionPane.showMessageDialog(null,"No se ha creado el producto");
+            }
+        }
     }//GEN-LAST:event_registerActionPerformed
+
+    private void quantityTFKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_quantityTFKeyTyped
+        char caracter = evt.getKeyChar();
+      // Verificar si la tecla pulsada no es un digito
+        if(((caracter < '0') ||(caracter > '9')) &&(caracter != '\b' /*corresponde a BACK_SPACE*/)){
+         evt.consume();  // ignorar el evento de teclado
+        }   
+    }//GEN-LAST:event_quantityTFKeyTyped
+
+    private void priceTFKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_priceTFKeyTyped
+        char caracter = evt.getKeyChar();//Captura la tecla presionada
+        // Verificar si la tecla pulsada no es un digito
+        if(((caracter < '0') ||(caracter > '9')) &&(caracter != '\b' /*corresponde a BACK_SPACE*/)){
+         evt.consume();  // ignorar el evento de teclado
+        }
+    }//GEN-LAST:event_priceTFKeyTyped
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox<String> categoryTB;
     private javax.swing.JTextField descriptionTF;
-    private javax.swing.JTextField idTF;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
