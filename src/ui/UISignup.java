@@ -8,9 +8,12 @@ import javax.swing.JOptionPane;
 import model.Customer;
 
 /**
- *
- * @author fblum
- */
+     * <h1>UISSignup</h1>
+     * <p> Formato visual para acceder a la creación de usuario
+     * @author fblumgarcia
+     * https://github.com/fblumgarcia
+     * 
+     */
 public class UISignup extends javax.swing.JFrame {
 
     /**

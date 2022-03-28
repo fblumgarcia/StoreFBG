@@ -11,7 +11,11 @@ package ui;
 public class UISUsers extends javax.swing.JPanel {
 
     /**
-     * Creates new form UISUsers
+     * <h1>UIUsers</h1>
+     * <p> Formato visual para acceder al listado de usuarios y poder dar más nivel a los empleados
+     * @author fblumgarcia
+     * https://github.com/fblumgarcia
+     * 
      */
     public UISUsers() {
         initComponents();

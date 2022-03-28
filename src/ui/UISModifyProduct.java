@@ -5,9 +5,12 @@
 package ui;
 
 /**
- *
- * @author fblum
- */
+     * <h1>UIModifyProduct</h1>
+     * <p> Formato visual para acceder al modificador del producto para crearlo o editar o borrar
+     * @author fblumgarcia
+     * https://github.com/fblumgarcia
+     * 
+     */
 public class UISModifyProduct extends javax.swing.JPanel {
     UIMPcreate create;UIMPmodify modify;
     /**

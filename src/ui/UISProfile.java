@@ -5,9 +5,12 @@
 package ui;
 
 /**
- *
- * @author fblum
- */
+     * <h1>UISProfile</h1>
+     * <p> Formato visual para acceder al perfil del usuario
+     * @author fblumgarcia
+     * https://github.com/fblumgarcia
+     * 
+     */
 public class UISProfile extends javax.swing.JPanel {
 
     /**

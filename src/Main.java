@@ -1,14 +1,14 @@
 
 import ui.UILogin;
 
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Main.java to edit this template
- */
-
 /**
- *
- * @author fblum
+ *<h1>Store FBG</h1>
+ * <p> 
+ * Es una aplicación que simula una tienda, con la posibildad de que los compradores se puedan registrar,
+ * ingresar. Adentro pueden buscar productos, seleccionar varios y añadirlos al carrito de compra, luego 
+ * ejecutar la compra. Conectado a una base de datos para para irse actualizando
+ * @author fblumgarcia
+ * https://github.com/fblumgarcia
  */
 public class Main {
 

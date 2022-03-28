@@ -13,11 +13,15 @@ import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import model.DataBase;
+import model.Validations;
 
 /**
- *
- * @author fblum
- */
+     * <h1>UIMPcreate</h1>
+     * <p> Formato visual para acceder a agregar productos
+     * @author fblumgarcia
+     * https://github.com/fblumgarcia
+     * 
+     */
 public class UIMPcreate extends javax.swing.JPanel {
     FileInputStream image;
     /**
@@ -198,16 +202,18 @@ public class UIMPcreate extends javax.swing.JPanel {
 
     private void quantityTFKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_quantityTFKeyTyped
         char caracter = evt.getKeyChar();
+        Validations val=new Validations();
       // Verificar si la tecla pulsada no es un digito
-        if(((caracter < '0') ||(caracter > '9')) &&(caracter != '\b' /*corresponde a BACK_SPACE*/)){
+        if(true==val.OnlyNumbers(caracter)){
          evt.consume();  // ignorar el evento de teclado
         }   
     }//GEN-LAST:event_quantityTFKeyTyped
 
     private void priceTFKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_priceTFKeyTyped
         char caracter = evt.getKeyChar();//Captura la tecla presionada
+        Validations val=new Validations();
         // Verificar si la tecla pulsada no es un digito
-        if(((caracter < '0') ||(caracter > '9')) &&(caracter != '\b' /*corresponde a BACK_SPACE*/)){
+        if(true==val.OnlyNumbers(caracter)){
          evt.consume();  // ignorar el evento de teclado
         }
     }//GEN-LAST:event_priceTFKeyTyped

@@ -5,9 +5,12 @@
 package ui;
 
 /**
- *
- * @author fblum
- */
+     * <h1>UIStore</h1>
+     * <p> Formato visual para acceder al inicio de la tienda
+     * @author fblumgarcia
+     * https://github.com/fblumgarcia
+     * 
+     */
 public class UIStore extends javax.swing.JFrame {
     
     UISProducts products;UISShop shop;UISProfile profile;UISUsers users;UISModifyProduct modifyProduct;

@@ -19,9 +19,12 @@ import java.util.logging.Logger;
 import ui.UISProducts;
 
 /**
- *
- * @author fblum
- */
+     * <h1>DataBase</h1>
+     * <p> Clase en la que se maneja la base de datos es decir se hace el CRUD
+     * @author fblumgarcia
+     * https://github.com/fblumgarcia
+     * 
+     */
 public class DataBase {   
    private final String dir="jdbc:mysql://localhost/storefbgdb";
    private final String usDB="root";
@@ -84,20 +87,23 @@ public class DataBase {
         }
         return isCreated;
     }
-    public void SearchProduct(String name){
+    public ArrayList SearchProduct(String name){
         tryLibrary();
-        UISProducts listprod=new UISProducts();
+        ArrayList products=new ArrayList();
         try(Connection conn=DriverManager.getConnection(dir,usDB,pwDB)){
             Statement stmt = conn.createStatement();
-            ResultSet rs = stmt.executeQuery("SELECT * FROM products WHERE name='"+name+"'");
+            ResultSet rs = stmt.executeQuery("SELECT * FROM products WHERE name='"+name+"'");//Se ace la busqueda
             rs.next();
             do{
-                listprod.OrganiceInfoTable(rs.getString("id"),rs.getString("name"),rs.getString("price"),rs.getString("quantity"),rs.getString("description"));
+                //Se añade toda la info dentro de un arrayList 
+                products.add(rs.getString("id"));products.add(rs.getString("name"));products.add(rs.getString("price"));
+                products.add(rs.getString("quantity"));products.add(rs.getString("description"));products.add(rs.getBlob("image"));
             }while(rs.next());
             conn.close();
         }  catch (SQLException ex) {
             Logger.getLogger(DataBase.class.getName()).log(Level.SEVERE, null, ex);
        }
+        return products;
     }
 
     

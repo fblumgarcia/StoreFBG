@@ -7,9 +7,12 @@ package model;
 import java.util.regex.*;
 
 /**
- *
- * @author fblum
- */
+     * <h1>Customer</h1>
+     * <p> Clase donde se crea los usuarios y se hace una validación de las passwords
+     * @author fblumgarcia
+     * https://github.com/fblumgarcia
+     * 
+     */
 public class Customer extends User{
     Validations val=new Validations();
     

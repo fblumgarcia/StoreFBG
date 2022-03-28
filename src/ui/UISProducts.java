@@ -1,20 +1,30 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
- */
 package ui;
 
+import com.mysql.cj.jdbc.Blob;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
+import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumnModel;
 import model.DataBase;
 
 /**
- *
- * @author fblum
- */
+     * <h1>UISProducts</h1>
+     * <p> Formato visual para acceder a la búsqueda de los productos
+     * @author fblumgarcia
+     * https://github.com/fblumgarcia
+     * 
+     */
 public class UISProducts extends javax.swing.JPanel {
-    DefaultTableModel model;
+
     /**
      * Creates new form Products
      */
@@ -24,9 +34,8 @@ public class UISProducts extends javax.swing.JPanel {
         //Se da dimensiones a las columnas
         columnModel.getColumn(0).setPreferredWidth(5);columnModel.getColumn(1).setPreferredWidth(20);columnModel.getColumn(2).setPreferredWidth(15);
         columnModel.getColumn(3).setPreferredWidth(15);columnModel.getColumn(4).setPreferredWidth(40);columnModel.getColumn(5).setPreferredWidth(40);
-        model=(DefaultTableModel) tableInfo.getModel(); 
     }
-       
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -38,7 +47,7 @@ public class UISProducts extends javax.swing.JPanel {
 
         searchTF = new javax.swing.JTextField();
         searchProd = new javax.swing.JButton();
-        jScrollPane1 = new javax.swing.JScrollPane();
+        jScrollPane2 = new javax.swing.JScrollPane();
         tableInfo = new javax.swing.JTable();
 
         setForeground(new java.awt.Color(204, 255, 51));
@@ -58,28 +67,13 @@ public class UISProducts extends javax.swing.JPanel {
                 {null, null, null, null, null, null},
                 {null, null, null, null, null, null},
                 {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
                 {null, null, null, null, null, null}
             },
             new String [] {
-                "ID", "NOMBRE", "PRECIO", "CANTIDAD", "IMÁGEN", "DESCRIPCIÓN"
+                "ID", "NOMBRE", "PRECIO", "CANTIDAD", "DESCRIPCIÓN", "IMÁGEN"
             }
-        ) {
-            boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false
-            };
-
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
-            }
-        });
-        tableInfo.setShowGrid(false);
-        jScrollPane1.setViewportView(tableInfo);
+        ));
+        jScrollPane2.setViewportView(tableInfo);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -92,8 +86,7 @@ public class UISProducts extends javax.swing.JPanel {
                 .addComponent(searchProd)
                 .addContainerGap(191, Short.MAX_VALUE))
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jScrollPane1)
+                .addComponent(jScrollPane2)
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -104,26 +97,46 @@ public class UISProducts extends javax.swing.JPanel {
                     .addComponent(searchTF, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(searchProd))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 521, Short.MAX_VALUE)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 521, Short.MAX_VALUE)
                 .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
 
     private void searchProdActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchProdActionPerformed
-        DataBase sP = new DataBase();
-        model.setRowCount(0);
-        sP.SearchProduct(searchTF.getText().toUpperCase());
+        DataBase sP = new DataBase();   //Llama la base de datos    
+        ArrayList prods=sP.SearchProduct(searchTF.getText().toUpperCase());//Ejecuta la busqueda
+        DefaultTableModel model=(DefaultTableModel) tableInfo.getModel();//Se instancia la tabla
+        model.setRowCount(0); //Se borra todas las filas
+        for(int i=0;i<prods.size()/6;i++){
+            Object[] row=new Object[6];//Se crea una array de la fila
+            int k=0;//Es usado para ubicar dentro del array de la fila
+            for(int j=i*6;j<(6*(i+1))-1;j++){//El j ya que inicia en 0 6 12..., y termina en 4 10...
+                row[k]=(String) prods.get(j);//Se añade al array row de las 5 primeras columnas
+                k++;//Se da el incremento del k
+            }
+            Blob blob=(Blob) prods.get(6*(i+1)-1);
+            try {
+                int blobLength=(int) blob.length();
+                byte[] bytes=blob.getBytes(1, blobLength);
+                blob.free();
+                BufferedImage img = ImageIO.read(new ByteArrayInputStream(bytes));
+                ImageIcon icon = new ImageIcon(img); 
+                row[5]=icon;
+                model.addRow(row);//Se añade a la fila dentro de la tabla
+            } catch (SQLException | IOException ex) {
+                Logger.getLogger(UISProducts.class.getName()).log(Level.SEVERE, null, ex);
+            }
+                       // https://www.invalidexpression.net/2016/06/truco-java-anadir-imagenes-un-jtable.html
+        }    
+        System.out.println(prods);
     }//GEN-LAST:event_searchProdActionPerformed
+  
     
-    public void OrganiceInfoTable(String id,String name,String price,String quantity,String description){
-        String[] row={id,name,price,quantity,description};System.out.println("da");
-        model.addRow(row);
-    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JButton searchProd;
     private javax.swing.JTextField searchTF;
-    public javax.swing.JTable tableInfo;
+    private javax.swing.JTable tableInfo;
     // End of variables declaration//GEN-END:variables
 }

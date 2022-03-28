@@ -5,30 +5,18 @@
 package model;
 
 /**
- *
- * @author fblum
- */
+     * <h1>User</h1>
+     * <p> Clase para verificar el login sea correcto
+     * @author fblumgarcia
+     * https://github.com/fblumgarcia
+     * 
+     */
 public class User {
     String password,email,name;
     public User(String email,String password){
         this.email=email;this.password=password;        
     }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
+    
 
     
     public String[] Login(){

@@ -5,9 +5,12 @@
 package ui;
 
 /**
- *
- * @author fblum
- */
+     * <h1>UILogin</h1>
+     * <p> Formato visual para acceder al carrito de compra y se genera un recibo de la compra
+     * @author fblumgarcia
+     * https://github.com/fblumgarcia
+     * 
+     */
 public class UISShop extends javax.swing.JPanel {
 
     /**

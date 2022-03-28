@@ -5,9 +5,12 @@
 package ui;
 
 /**
- *
- * @author fblum
- */
+     * <h1>UIMPmodify</h1>
+     * <p> Formato visual para acceder al modificador del producto
+     * @author fblumgarcia
+     * https://github.com/fblumgarcia
+     * 
+     */
 public class UIMPmodify extends javax.swing.JPanel {
 
     /**
