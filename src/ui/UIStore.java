@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
 package ui;
 
 /**
@@ -187,6 +183,7 @@ public class UIStore extends javax.swing.JFrame {
     private void menShopMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_menShopMouseClicked
         products.setVisible(false);
         shop.setVisible(true);
+        shop.ShowTable(products.getProductsBuy());
         logo.setVisible(false);
         profile.setVisible(false);
         users.setVisible(false);

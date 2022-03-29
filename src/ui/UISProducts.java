@@ -22,7 +22,7 @@ import model.DataBase;
      * 
      */
 public class UISProducts extends javax.swing.JPanel {
-    public ArrayList productsBuy=new ArrayList();
+    private ArrayList productsBuy=new ArrayList();
     /**
      * Creates new form Products
      */
@@ -98,7 +98,7 @@ public class UISProducts extends javax.swing.JPanel {
                 .addComponent(searchTF, javax.swing.GroupLayout.PREFERRED_SIZE, 395, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(26, 26, 26)
                 .addComponent(searchProd)
-                .addGap(177, 482, Short.MAX_VALUE))
+                .addGap(195, 482, Short.MAX_VALUE))
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jScrollPane2)
                 .addContainerGap())
@@ -143,22 +143,38 @@ public class UISProducts extends javax.swing.JPanel {
                 Logger.getLogger(UISProducts.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-        System.out.println("");
     }//GEN-LAST:event_searchProdActionPerformed
     
     
-    UISShop shop=new UISShop();
     private void tableInfoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableInfoMouseClicked
+         try {//Para hacer esperar la función
+            Thread.sleep(1*200);
+        }
+         catch (Exception e) {
+            System.out.println(e);
+        }
         if(evt.getX()>800&&evt.getX()<980){//Obtiene la posición en que se da click si cumple da sobre el checkbox
-            if(tableInfo.getValueAt(evt.getY()/200, 6).equals(true)){//El primer valor da la posición de la fila en entero
-                shop.setProductsToBuy((String) tableInfo.getValueAt(evt.getY()/200, 1),(String) tableInfo.getValueAt(evt.getY()/200, 2), 1);
-            }else if(tableInfo.getValueAt(evt.getY()/200, 6).equals(false)){
-                shop.setProductsToBuy((String) tableInfo.getValueAt(evt.getY()/200, 1),(String) tableInfo.getValueAt(evt.getY()/200, 2), 2);
+            boolean comp=productsBuy.contains(tableInfo.getValueAt(evt.getY()/200, 1));//Retorna si el valor esta o no en el ArrayList
+            if(tableInfo.getValueAt(evt.getY()/200, 6).equals(true)&&comp==false){//El primer valor da la posición de la fila en entero y que no este ese producto en la lista
+                productsBuy.add(tableInfo.getValueAt(evt.getY()/200, 1));
+                productsBuy.add(tableInfo.getValueAt(evt.getY()/200, 2));
+                
+            }else if(tableInfo.getValueAt(evt.getY()/200, 6).equals(false)&&comp==true){
+                productsBuy.remove(tableInfo.getValueAt(evt.getY()/200, 1));
+                productsBuy.remove(tableInfo.getValueAt(evt.getY()/200, 2));
             }     
         }
     }//GEN-LAST:event_tableInfoMouseClicked
 
+    public ArrayList getProductsBuy() {
+        return productsBuy;
+    }
 
+    public void setProductsBuy(String name,String price) {
+        productsBuy.remove(name);
+        productsBuy.remove(price);
+        System.out.println(productsBuy);
+    }
     
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

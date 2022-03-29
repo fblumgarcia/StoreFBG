@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
- */
 package ui;
 
 import java.util.ArrayList;
@@ -17,13 +13,14 @@ import javax.swing.table.TableColumnModel;
      */
 public class UISShop extends javax.swing.JPanel {
     private ArrayList productsToBuy=new ArrayList();
-
+    UISProducts prods;
     
     /**
      * Creates new form UISShop
      */
     public UISShop() {
         initComponents();
+        prods=new UISProducts();
         TableColumnModel columnModel=tableToBuy.getColumnModel();//Se inicializa el modelo de la tabla
         columnModel.getColumn(0).setPreferredWidth(5);columnModel.getColumn(1).setPreferredWidth(20);columnModel.getColumn(2).setPreferredWidth(15);
         columnModel.getColumn(3).setPreferredWidth(15);columnModel.getColumn(4).setPreferredWidth(40);      
@@ -42,7 +39,7 @@ public class UISShop extends javax.swing.JPanel {
         tableToBuy = new javax.swing.JTable();
         jLabel1 = new javax.swing.JLabel();
         totalLabel = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
+        buy = new javax.swing.JButton();
 
         setForeground(new java.awt.Color(255, 204, 204));
 
@@ -51,11 +48,11 @@ public class UISShop extends javax.swing.JPanel {
 
             },
             new String [] {
-                "NOMBRE", "PRECIO", "CANTIDAD", "PRECIO TOTAL", "CLICK SI NO LO QUIERE AÑADIR"
+                "NOMBRE", "PRECIO", "CANTIDAD", "PAGO", "ELIMINAR"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Object.class, java.lang.Object.class, java.lang.Integer.class, java.lang.Object.class, Boolean.class
+                java.lang.Object.class, java.lang.Object.class, java.lang.Integer.class, java.lang.Integer.class, java.lang.Boolean.class
             };
             boolean[] canEdit = new boolean [] {
                 false, false, true, false, true
@@ -69,16 +66,21 @@ public class UISShop extends javax.swing.JPanel {
                 return canEdit [columnIndex];
             }
         });
+        tableToBuy.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tableToBuyMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(tableToBuy);
 
         jLabel1.setText("TOTAL DE LA COMPRA ES: ");
 
         totalLabel.setText("jLabel2");
 
-        jButton1.setText("Hacer Compra");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        buy.setText("Hacer Compra");
+        buy.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                buyActionPerformed(evt);
             }
         });
 
@@ -97,7 +99,7 @@ public class UISShop extends javax.swing.JPanel {
                         .addComponent(totalLabel))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(221, 221, 221)
-                        .addComponent(jButton1)))
+                        .addComponent(buy)))
                 .addContainerGap(207, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -113,34 +115,62 @@ public class UISShop extends javax.swing.JPanel {
                             .addComponent(jLabel1)
                             .addComponent(totalLabel))
                         .addGap(113, 113, 113)
-                        .addComponent(jButton1)))
-                .addContainerGap(171, Short.MAX_VALUE))
+                        .addComponent(buy)))
+                .addContainerGap(146, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        System.out.println(productsToBuy);
-    }//GEN-LAST:event_jButton1ActionPerformed
+    private void buyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buyActionPerformed
+      
+    }//GEN-LAST:event_buyActionPerformed
+    
+    private void tableToBuyMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableToBuyMouseClicked
+        ShowTotal();
+        /*if(450<evt.getX()||evt.getX()>340){
+            ShowTotal();
+        }*/
+    }//GEN-LAST:event_tableToBuyMouseClicked
 
-   public void setProductsToBuy(String name,String price,int cod) {
-        if(cod==1){
-            productsToBuy.add(name);productsToBuy.add(price);
-        }else if(cod==2){
-             productsToBuy.remove(name);productsToBuy.remove(price);
+    public void ShowTable(ArrayList products){
+        try {//Para hacer esperar la función
+            Thread.sleep(1*500);
         }
-        ShowTable(productsToBuy);
-    } 
-   public void ShowTable(ArrayList products){
-       System.out.println(products);
-       DefaultTableModel model=(DefaultTableModel) tableToBuy.getModel();//Se instancia la tabla
-       model.setRowCount(0); //Se borra todas las filas
-       String[] row={"0","1","2","3"};
-       model.addRow(row);
-       System.out.println(row);
-   }
-
+         catch (Exception e) {
+            System.out.println(e);
+        }
+        DefaultTableModel model=(DefaultTableModel) tableToBuy.getModel();//Se instancia la tabla
+        model.setRowCount(0); //Se borra todas las filas
+        for(int i=0;i<products.size()/2;i++){//Para recorrer todo el array
+            Object[] row=new Object[5];//Se inicia la fila
+            int k=0;//Para recorrer el row
+            for(int j=i*2;j<(2*(i+1));j++){//El j ya que inicia en 0 2 4..., y termina en 1 3...
+                row[k]= products.get(j);
+                k++;
+            }
+            row[2]=1;
+            row[3]=row[1];
+            row[4]=true;
+            model.addRow(row);
+            tableToBuy.setRowHeight(i, 50);//Dar la altura de la imagen a la fila
+        }
+        ShowTotal();
+    }
+   
+    public void ShowTotal(){
+        int total=0;//Se define una variable total que es la suma de todos los productos
+        
+        for(int i=0;i<tableToBuy.getRowCount();i++){
+            if(tableToBuy.getValueAt(i, 4).equals(true)){//Sólo los que están seleccionados hace la suma
+                int value=(Integer.valueOf((String) tableToBuy.getValueAt(i, 1))*((int) tableToBuy.getValueAt(i, 2)));
+                total=total+value;
+                tableToBuy.setValueAt(String.valueOf(value), i,3);
+            }            
+        }
+        totalLabel.setText(String.valueOf(total));
+    }
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
+    private javax.swing.JButton buy;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
     public javax.swing.JTable tableToBuy;
