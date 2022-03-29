@@ -4,6 +4,10 @@
  */
 package ui;
 
+import java.util.ArrayList;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumnModel;
+ 
 /**
      * <h1>UILogin</h1>
      * <p> Formato visual para acceder al carrito de compra y se genera un recibo de la compra
@@ -12,12 +16,17 @@ package ui;
      * 
      */
 public class UISShop extends javax.swing.JPanel {
+    private ArrayList productsToBuy=new ArrayList();
 
+    
     /**
      * Creates new form UISShop
      */
     public UISShop() {
         initComponents();
+        TableColumnModel columnModel=tableToBuy.getColumnModel();//Se inicializa el modelo de la tabla
+        columnModel.getColumn(0).setPreferredWidth(5);columnModel.getColumn(1).setPreferredWidth(20);columnModel.getColumn(2).setPreferredWidth(15);
+        columnModel.getColumn(3).setPreferredWidth(15);columnModel.getColumn(4).setPreferredWidth(40);      
     }
 
     /**
@@ -29,21 +38,112 @@ public class UISShop extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jScrollPane1 = new javax.swing.JScrollPane();
+        tableToBuy = new javax.swing.JTable();
+        jLabel1 = new javax.swing.JLabel();
+        totalLabel = new javax.swing.JLabel();
+        jButton1 = new javax.swing.JButton();
+
         setForeground(new java.awt.Color(255, 204, 204));
+
+        tableToBuy.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "NOMBRE", "PRECIO", "CANTIDAD", "PRECIO TOTAL", "CLICK SI NO LO QUIERE AÑADIR"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.Object.class, java.lang.Object.class, java.lang.Integer.class, java.lang.Object.class, Boolean.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false, true, false, true
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jScrollPane1.setViewportView(tableToBuy);
+
+        jLabel1.setText("TOTAL DE LA COMPRA ES: ");
+
+        totalLabel.setText("jLabel2");
+
+        jButton1.setText("Hacer Compra");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1000, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(142, 142, 142)
+                        .addComponent(jLabel1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(totalLabel))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(221, 221, 221)
+                        .addComponent(jButton1)))
+                .addContainerGap(207, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 579, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(72, 72, 72)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel1)
+                            .addComponent(totalLabel))
+                        .addGap(113, 113, 113)
+                        .addComponent(jButton1)))
+                .addContainerGap(171, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        System.out.println(productsToBuy);
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+   public void setProductsToBuy(String name,String price,int cod) {
+        if(cod==1){
+            productsToBuy.add(name);productsToBuy.add(price);
+        }else if(cod==2){
+             productsToBuy.remove(name);productsToBuy.remove(price);
+        }
+        ShowTable(productsToBuy);
+    } 
+   public void ShowTable(ArrayList products){
+       System.out.println(products);
+       DefaultTableModel model=(DefaultTableModel) tableToBuy.getModel();//Se instancia la tabla
+       model.setRowCount(0); //Se borra todas las filas
+       String[] row={"0","1","2","3"};
+       model.addRow(row);
+       System.out.println(row);
+   }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton jButton1;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JScrollPane jScrollPane1;
+    public javax.swing.JTable tableToBuy;
+    private javax.swing.JLabel totalLabel;
     // End of variables declaration//GEN-END:variables
 }

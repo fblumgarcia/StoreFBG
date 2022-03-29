@@ -22,11 +22,11 @@
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" attributes="0">
-              <EmptySpace min="-2" pref="248" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="25" max="-2" attributes="0"/>
               <Component id="searchTF" min="-2" pref="395" max="-2" attributes="0"/>
-              <EmptySpace min="-2" pref="94" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="26" max="-2" attributes="0"/>
               <Component id="searchProd" min="-2" max="-2" attributes="0"/>
-              <EmptySpace pref="191" max="32767" attributes="0"/>
+              <EmptySpace min="177" pref="482" max="32767" attributes="0"/>
           </Group>
           <Group type="102" alignment="0" attributes="0">
               <Component id="jScrollPane2" max="32767" attributes="0"/>
@@ -69,17 +69,13 @@
       <SubComponents>
         <Component class="javax.swing.JTable" name="tableInfo">
           <Properties>
-            <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
-              <Table columnCount="6" rowCount="7">
-                <Column editable="true" title="ID" type="java.lang.Object"/>
-                <Column editable="true" title="NOMBRE" type="java.lang.Object"/>
-                <Column editable="true" title="PRECIO" type="java.lang.Object"/>
-                <Column editable="true" title="CANTIDAD" type="java.lang.Object"/>
-                <Column editable="true" title="DESCRIPCI&#xd3;N" type="java.lang.Object"/>
-                <Column editable="true" title="IM&#xc1;GEN" type="java.lang.Object"/>
-              </Table>
+            <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+              <Connection code="new javax.swing.table.DefaultTableModel(&#xa;    new Object [][] {&#xa;       &#xa;    },&#xa;    new String [] {&#xa;        &quot;ID&quot;, &quot;NOMBRE&quot;, &quot;PRECIO&quot;, &quot;CANTIDAD&quot;, &quot;DESCRIPCI&#xd3;N&quot;, &quot;IM&#xc1;GEN&quot;, &quot;COMPRAR&quot;&#xa;    }&#xa;) {&#xa;    Class[] types = new Class [] {&#xa;        java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, ImageIcon.class, Boolean.class&#xa;    };&#xa;&#xa;    public Class getColumnClass(int columnIndex) {&#xa;        return types [columnIndex];&#xa;    }&#xa;    @Override&#xa;    public boolean isCellEditable(int row, int column) {&#xa;        if(column==6){&#xa;            return true;&#xa;        }else{&#xa;            return false;&#xa;        }&#xa;    }&#xa;&#xa;}" type="code"/>
             </Property>
           </Properties>
+          <Events>
+            <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="tableInfoMouseClicked"/>
+          </Events>
         </Component>
       </SubComponents>
     </Container>

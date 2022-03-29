@@ -4,10 +4,8 @@
  */
 package model;
 
-import com.mysql.cj.jdbc.Blob;
 import java.io.FileInputStream;
 import java.sql.Connection;
-import java.io.IOException;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -16,7 +14,6 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import ui.UISProducts;
 
 /**
      * <h1>DataBase</h1>
@@ -92,12 +89,14 @@ public class DataBase {
         ArrayList products=new ArrayList();
         try(Connection conn=DriverManager.getConnection(dir,usDB,pwDB)){
             Statement stmt = conn.createStatement();
-            ResultSet rs = stmt.executeQuery("SELECT * FROM products WHERE name='"+name+"'");//Se ace la busqueda
+            ResultSet rs = stmt.executeQuery("SELECT * FROM products WHERE name LIKE'%"+name+"%'");//Se ace la busqueda
             rs.next();
             do{
                 //Se añade toda la info dentro de un arrayList 
-                products.add(rs.getString("id"));products.add(rs.getString("name"));products.add(rs.getString("price"));
-                products.add(rs.getString("quantity"));products.add(rs.getString("description"));products.add(rs.getBlob("image"));
+                if(rs.getInt("quantity")!=0){//Si no hay stock no muestra el producto
+                    products.add(rs.getString("id"));products.add(rs.getString("name"));products.add(rs.getString("price"));
+                    products.add(rs.getString("quantity"));products.add(rs.getString("description"));products.add(rs.getBlob("image"));
+                }
             }while(rs.next());
             conn.close();
         }  catch (SQLException ex) {

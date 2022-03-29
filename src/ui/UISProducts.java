@@ -6,17 +6,15 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
-import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumnModel;
 import model.DataBase;
 
-/**
+    /**
      * <h1>UISProducts</h1>
      * <p> Formato visual para acceder a la búsqueda de los productos
      * @author fblumgarcia
@@ -24,12 +22,12 @@ import model.DataBase;
      * 
      */
 public class UISProducts extends javax.swing.JPanel {
-
+    public ArrayList productsBuy=new ArrayList();
     /**
      * Creates new form Products
      */
     public UISProducts() {
-        initComponents();
+        initComponents();       
         TableColumnModel columnModel=tableInfo.getColumnModel();//Se inicializa el modelo de la tabla
         //Se da dimensiones a las columnas
         columnModel.getColumn(0).setPreferredWidth(5);columnModel.getColumn(1).setPreferredWidth(20);columnModel.getColumn(2).setPreferredWidth(15);
@@ -61,18 +59,34 @@ public class UISProducts extends javax.swing.JPanel {
 
         tableInfo.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null}
+
             },
             new String [] {
-                "ID", "NOMBRE", "PRECIO", "CANTIDAD", "DESCRIPCIÓN", "IMÁGEN"
+                "ID", "NOMBRE", "PRECIO", "CANTIDAD", "DESCRIPCIÓN", "IMÁGEN", "COMPRAR"
             }
-        ));
+        ) {
+            Class[] types = new Class [] {
+                java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, ImageIcon.class, Boolean.class
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                if(column==6){
+                    return true;
+                }else{
+                    return false;
+                }
+            }
+
+        });
+        tableInfo.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tableInfoMouseClicked(evt);
+            }
+        });
         jScrollPane2.setViewportView(tableInfo);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -80,11 +94,11 @@ public class UISProducts extends javax.swing.JPanel {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(248, 248, 248)
+                .addGap(25, 25, 25)
                 .addComponent(searchTF, javax.swing.GroupLayout.PREFERRED_SIZE, 395, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(94, 94, 94)
+                .addGap(26, 26, 26)
                 .addComponent(searchProd)
-                .addContainerGap(191, Short.MAX_VALUE))
+                .addGap(177, 482, Short.MAX_VALUE))
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jScrollPane2)
                 .addContainerGap())
@@ -103,7 +117,7 @@ public class UISProducts extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void searchProdActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchProdActionPerformed
-        DataBase sP = new DataBase();   //Llama la base de datos    
+        DataBase sP = new DataBase();   //Llama la base de datos   
         ArrayList prods=sP.SearchProduct(searchTF.getText().toUpperCase());//Ejecuta la busqueda
         DefaultTableModel model=(DefaultTableModel) tableInfo.getModel();//Se instancia la tabla
         model.setRowCount(0); //Se borra todas las filas
@@ -114,6 +128,7 @@ public class UISProducts extends javax.swing.JPanel {
                 row[k]=(String) prods.get(j);//Se añade al array row de las 5 primeras columnas
                 k++;//Se da el incremento del k
             }
+            //Se convierte el archivo blob a ImageIcon
             Blob blob=(Blob) prods.get(6*(i+1)-1);
             try {
                 int blobLength=(int) blob.length();
@@ -121,16 +136,29 @@ public class UISProducts extends javax.swing.JPanel {
                 blob.free();
                 BufferedImage img = ImageIO.read(new ByteArrayInputStream(bytes));
                 ImageIcon icon = new ImageIcon(img); 
-                row[5]=icon;
+                row[5]=icon;     
                 model.addRow(row);//Se añade a la fila dentro de la tabla
+                tableInfo.setRowHeight(i, 200);//Dar la altura de la imagen a la fila
             } catch (SQLException | IOException ex) {
                 Logger.getLogger(UISProducts.class.getName()).log(Level.SEVERE, null, ex);
             }
-                       // https://www.invalidexpression.net/2016/06/truco-java-anadir-imagenes-un-jtable.html
-        }    
-        System.out.println(prods);
+        }
+        System.out.println("");
     }//GEN-LAST:event_searchProdActionPerformed
-  
+    
+    
+    UISShop shop=new UISShop();
+    private void tableInfoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableInfoMouseClicked
+        if(evt.getX()>800&&evt.getX()<980){//Obtiene la posición en que se da click si cumple da sobre el checkbox
+            if(tableInfo.getValueAt(evt.getY()/200, 6).equals(true)){//El primer valor da la posición de la fila en entero
+                shop.setProductsToBuy((String) tableInfo.getValueAt(evt.getY()/200, 1),(String) tableInfo.getValueAt(evt.getY()/200, 2), 1);
+            }else if(tableInfo.getValueAt(evt.getY()/200, 6).equals(false)){
+                shop.setProductsToBuy((String) tableInfo.getValueAt(evt.getY()/200, 1),(String) tableInfo.getValueAt(evt.getY()/200, 2), 2);
+            }     
+        }
+    }//GEN-LAST:event_tableInfoMouseClicked
+
+
     
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

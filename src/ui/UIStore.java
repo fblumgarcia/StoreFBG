@@ -62,6 +62,7 @@ public class UIStore extends javax.swing.JFrame {
         logout = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("STORE FBG");
 
         logo.setBackground(new java.awt.Color(204, 204, 204));
         logo.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 2, true));
@@ -190,8 +191,8 @@ public class UIStore extends javax.swing.JFrame {
         profile.setVisible(false);
         users.setVisible(false);
         modifyProduct.setVisible(false);
-        revalidate();
-        repaint();
+        /*revalidate();
+        repaint();*/
     }//GEN-LAST:event_menShopMouseClicked
 
     private void menProfileMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_menProfileMouseClicked
