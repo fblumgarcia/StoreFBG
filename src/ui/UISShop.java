@@ -12,9 +12,8 @@ import javax.swing.table.TableColumnModel;
      * 
      */
 public class UISShop extends javax.swing.JPanel {
-    private ArrayList productsToBuy=new ArrayList();
-    UISProducts prods;
     
+    UISProducts prods;UIStore store;
     /**
      * Creates new form UISShop
      */
@@ -119,18 +118,29 @@ public class UISShop extends javax.swing.JPanel {
                 .addContainerGap(146, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
-
+    
     private void buyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buyActionPerformed
-      
+        ArrayList productsToBuy=new ArrayList();    
+        for(int i=0;i<tableToBuy.getRowCount();i++){//Recorre la tabla
+            if(tableToBuy.getValueAt(i, 4).equals(true)){//Si esta seleccionado la fila
+                productsToBuy.add(tableToBuy.getValueAt(i, 0));//Añade el nombre
+                productsToBuy.add( tableToBuy.getValueAt(i, 2));
+                productsToBuy.add( tableToBuy.getValueAt(i, 3));
+            }        
+        }
+        System.out.println(productsToBuy);
+        System.out.println(user);//Se crea unr recibo
     }//GEN-LAST:event_buyActionPerformed
     
     private void tableToBuyMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableToBuyMouseClicked
-        ShowTotal();
-        /*if(450<evt.getX()||evt.getX()>340){
-            ShowTotal();
-        }*/
+        ShowTotal(); //Cada vez que se da click en la tabla se actualiza
     }//GEN-LAST:event_tableToBuyMouseClicked
-
+    
+    ArrayList user=new ArrayList();
+    public void ShowUser(ArrayList user){//Función para obtener la info del usuario desde el UIStore
+        this.user=user;
+    }
+    
     public void ShowTable(ArrayList products){
         try {//Para hacer esperar la función
             Thread.sleep(1*500);

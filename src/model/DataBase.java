@@ -68,7 +68,29 @@ public class DataBase {
         return user;
     }
     
+    public boolean UpdateUser(String email1,String email2,String password){
+        boolean isUpdated=false;
+        tryLibrary();
+        try(Connection conn=DriverManager.getConnection(dir,usDB,pwDB)){
+            Statement stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT * FROM users WHERE email='"+email1+"'");
+            rs.next();
+            if(email2 == null){//Si no cambia el correo 2 se pone el mismo correo anterior
+                email2=email1;                
+            }
+            if(password == null){//Si no cambia el password se pone el mismo password anterior
+                password=rs.getString("password");
+            }
+            stmt.executeUpdate("UPDATE users SET email='"+email2+"', password='"+password+"' WHERE email='"+email1+"'");
+            conn.close();
+            isUpdated=true;
+        } catch (SQLException ex) {
+           Logger.getLogger(DataBase.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return isUpdated;
+    }
     //Trabaja la tabla de productos
+    
     public boolean CreateProduct(String name,int price,int quantity,FileInputStream image,String description){
         boolean isCreated=false;
         tryLibrary();
@@ -84,6 +106,7 @@ public class DataBase {
         }
         return isCreated;
     }
+    
     public ArrayList SearchProduct(String name){
         tryLibrary();
         ArrayList products=new ArrayList();

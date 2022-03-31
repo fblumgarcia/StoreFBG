@@ -1,5 +1,7 @@
 package ui;
 
+import java.util.ArrayList;
+
 /**
      * <h1>UIStore</h1>
      * <p> Formato visual para acceder al inicio de la tienda
@@ -10,6 +12,7 @@ package ui;
 public class UIStore extends javax.swing.JFrame {
     
     UISProducts products;UISShop shop;UISProfile profile;UISUsers users;UISModifyProduct modifyProduct;
+    private ArrayList user=new ArrayList();
     /**
      * Creates new form UIStore
      */
@@ -32,8 +35,20 @@ public class UIStore extends javax.swing.JFrame {
         }
         lblWelc.setText("Bienvenido "+name+" a STOREFBG");//Da el mensaje de bienvenida
         //falta el logo
+        user.add(name);user.add(email);
+    }
+    
+    public boolean UIStore2(){
+        UILogin login=new UILogin();
+        login.setVisible(true);
+        dispose();
+        return false;
     }
 
+    public ArrayList getUser() {
+        return user;
+    }
+    
     private UIStore() {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
@@ -196,7 +211,7 @@ public class UIStore extends javax.swing.JFrame {
         products.setVisible(false);
         shop.setVisible(false);
         logo.setVisible(false);
-        profile.setVisible(true);
+        profile.setVisible(true);profile.ShowUser(user);
         users.setVisible(false);
         modifyProduct.setVisible(false);
         revalidate();

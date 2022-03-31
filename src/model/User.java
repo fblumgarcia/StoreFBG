@@ -14,7 +14,7 @@ package model;
 public class User {
     String password,email,name;
     public User(String email,String password){
-        this.email=email;this.password=password;        
+        this.email=email;this.password=password;   
     }
     
 
@@ -27,7 +27,7 @@ public class User {
         if(true==val.valEmail(email)){
             if(user[0]!=null){//Verifica que exista ese usuario en la DB
                 if(password.equals(user[2])){//Verifica que la contraseña coincida
-                    msg[0]=user[0];msg[1]=user[1];msg[2]="Bienvenido "+user[0]+" a StoreFBG";msg[3]=user[3];//Crea un array con nombre, email,tipo usuario y un mensaje
+                    msg[0]=user[0];msg[1]=user[1];msg[2]="Bienvenido "+user[0]+" a StoreFBG";msg[3]=user[3];//Crea un array con nombre, email,tipo usuario y un mensaje 
                 }else{msg[2]="Verífique los datos ingresados";}//Crea array con mensaje
             }else{msg[2]="Verífique los datos ingresados";}
         }else{msg[2]="Verífique los datos ingresados";}
