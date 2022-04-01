@@ -89,13 +89,14 @@ public class UISPConfirm extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null,"Por favor ingrese todos los datos");
        }else{
             User usLog=new User((String) data.get(0),new String(passw1));//llama clase de user
-            JOptionPane.showMessageDialog(null,usLog.Login()[2]);
-            if(usLog.Login()[0]!=null){
-                db.UpdateUser((String) data.get(0),(String) data.get(1),(String) data.get(2));
-                System.out.println((String) data.get(0)+(String) data.get(1)+(String) data.get(2));
-                JOptionPane.showMessageDialog(null,"Cambio realizado. Vuelve a ingresar");
-
-                dispose();
+            if(usLog.Login()[2].equals("Verífique los datos ingresados")){
+                JOptionPane.showMessageDialog(null,usLog.Login()[2]);
+            }else{
+                if(usLog.Login()[0]!=null){
+                    db.UpdateUser((String) data.get(0),(String) data.get(1),(String) data.get(2));
+                    JOptionPane.showMessageDialog(null,"Cambio realizado. Vuelve a ingresar");
+                    System.exit(0);
+                }
             }
         }
     }//GEN-LAST:event_changeFinalActionPerformed

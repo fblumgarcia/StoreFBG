@@ -4,7 +4,18 @@
  */
 package com.fblumgarcia.model;
 
+import com.fblumgarcia.ui.UISProducts;
+import com.mysql.cj.jdbc.Blob;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
+
 
     /**
      * <h1>Product</h1>
@@ -14,14 +25,26 @@ import java.util.ArrayList;
      * 
      */
 public class Product {
-    ArrayList productstoBuy;
-     public void SetProductsToBuy(ArrayList productsBuy){
-        
-        productstoBuy=productsBuy;
-        System.out.println(productsBuy);
-    }
-     public ArrayList GetProductsToBuy(){
-        return productstoBuy;
+    
+    public ArrayList SearchProduct(String search){
+        ArrayList products=new ArrayList();
+        DataBase sP = new DataBase();   //Llama la base de datos   
+        products=sP.SearchProduct(search.toUpperCase());//Ejecuta la busqueda
+        for(int i=0;i<products.size()/6;i++){
+            //Se convierte el archivo blob a ImageIcon
+            Blob blob=(Blob) products.get(6*(i+1)-1);
+            try {
+                int blobLength=(int) blob.length();
+                byte[] bytes=blob.getBytes(1, blobLength);
+                blob.free();
+                BufferedImage img = ImageIO.read(new ByteArrayInputStream(bytes));
+                ImageIcon icon = new ImageIcon(img); 
+                products.set(6*(i+1)-1, icon);//Reemplaza en la misma posición la imágen
+            } catch (SQLException | IOException ex) {
+                Logger.getLogger(UISProducts.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }        
+        return products;
     }
      
 }

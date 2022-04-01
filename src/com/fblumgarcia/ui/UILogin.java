@@ -42,7 +42,7 @@ public class UILogin extends javax.swing.JFrame {
 
         user.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         user.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        user.setText("fbg@user");
+        user.setText("lfas@emp");
 
         password.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         password.setHorizontalAlignment(javax.swing.JTextField.CENTER);

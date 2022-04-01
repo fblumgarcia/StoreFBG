@@ -199,17 +199,23 @@ public class UISProfile extends javax.swing.JPanel {
 
     private void makeChangeBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_makeChangeBtnActionPerformed
         char[] passw1=newPassword1Tf.getPassword();//Se obtiene password en characters
+        UISPConfirm conf=new UISPConfirm();
         if(!new String(passw1).equals("")||!newEmailTF.getText().equals("")){
-            if(VerifyEmail().equals(true)&&VerifyPassw().equals(true)){
-            UISPConfirm conf=new UISPConfirm();
-            conf.setVisible(true);        
-            conf.setData(email,emailNew,passwNew);  
-            } 
+            if(VerifyEmail().equals(true)&&VerifyPassw().equals(true)&&changePassword.isSelected()==true&&changeEmail.isSelected()==true){
+                conf.setVisible(true);        
+                conf.setData(email,emailNew,passwNew); 
+            }else if(VerifyEmail().equals(true)&&changeEmail.isSelected()==true){
+                conf.setVisible(true);        
+                conf.setData(email,emailNew,passwNew);
+            }else if(VerifyPassw().equals(true)&&changePassword.isSelected()==true){
+                conf.setVisible(true);        
+                conf.setData(email,emailNew,passwNew);
+            }
         }
                
     }//GEN-LAST:event_makeChangeBtnActionPerformed
     
-    private void ShowChange(){
+    private void ShowChange(){//Para hacer visible el botón del cambio
         if(changePassword.isSelected()==true || changeEmail.isSelected()==true){
             makeChangeBtn.setVisible(true);
         }else if(changePassword.isSelected()==false && changeEmail.isSelected()==false){
@@ -217,14 +223,14 @@ public class UISProfile extends javax.swing.JPanel {
         }
     }
     String email;String emailNew;String passwNew;
-    public String ShowUser(ArrayList user){
+    public String ShowUser(ArrayList user){//Muestra los datos del usuario en la página de perfil
         nameLb.setText((String) user.get(0));
         emailLb.setText("Tu email actual es: "+(String) user.get(1));
         email=(String) user.get(1);
         return email;
     }
     
-    public Boolean VerifyEmail(){
+    public Boolean VerifyEmail(){//Verifica que el nuevo email ingresado cumpla con la forma ads@das
         boolean verEmail=false;
         if(!newEmailTF.getText().equals("")){//Para hacer la validación del correo
             if(true==val.valEmail(newEmailTF.getText())){
@@ -233,24 +239,21 @@ public class UISProfile extends javax.swing.JPanel {
             }else{
                 JOptionPane.showMessageDialog(null,"Por favor verífique los datos");
             }
-        }else{
-            verEmail=true;
         }
         return verEmail;
     }
     
-    public Boolean VerifyPassw(){
+    public Boolean VerifyPassw(){//Verifica que las dos passwords sean iguales
         boolean verPassw=false;
         char[] passw1=newPassword1Tf.getPassword();//Se obtiene password en characters
         char[] passw2=newPassword2Tf.getPassword();        
         if(!new String(passw1).equals("")){//Se valida que las dos passwords sean iguales
             if(new String(passw1).equals(new String(passw2))){
                 passwNew=new String(passw1);
+                verPassw=true;
             }else{
                 JOptionPane.showMessageDialog(null,"Por favor verífique los datos");
             }
-        }else{
-            verPassw=true;
         }
         return verPassw;
     }

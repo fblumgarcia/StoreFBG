@@ -11,7 +11,7 @@ import java.util.ArrayList;
      */
 public class UIStore extends javax.swing.JFrame {
     
-    UISProducts products;UISShop shop;UISProfile profile;UISUsers users;UISModifyProduct modifyProduct;
+    UISProducts products;UISShop shop;UISProfile profile;UISModifyProduct modifyProduct;
     private ArrayList user=new ArrayList();
     /**
      * Creates new form UIStore
@@ -21,16 +21,13 @@ public class UIStore extends javax.swing.JFrame {
         products=new UISProducts();//LLama al panel productos
         shop=new UISShop();
         profile=new UISProfile();
-        users=new UISUsers();
         modifyProduct=new UISModifyProduct();
         products.setBounds(0, 21, 1000, 579);//Define posición y dimensiones
         add(products);products.setVisible(false);//Lo añade y oculta
         shop.setBounds(0, 21, 1000, 579);add(shop);shop.setVisible(false);
         profile.setBounds(0, 21, 1000, 579);add(profile);profile.setVisible(false);
-        users.setBounds(0, 21, 1000, 579);add(users);users.setVisible(false);
         modifyProduct.setBounds(0, 21, 1000, 579);add(modifyProduct);modifyProduct.setVisible(false);
         if(userType.equals("CLIENTE")){//Si el usuario es cliente oculta la opción Users y modificar Productos
-            menUsers.setVisible(false);
             menModifyProducts.setVisible(false);
         }
         lblWelc.setText("Bienvenido "+name+" a STOREFBG");//Da el mensaje de bienvenida
@@ -38,18 +35,12 @@ public class UIStore extends javax.swing.JFrame {
         user.add(name);user.add(email);
     }
     
-    public boolean UIStore2(){
-        UILogin login=new UILogin();
-        login.setVisible(true);
-        dispose();
-        return false;
-    }
 
-    public ArrayList getUser() {
+    private ArrayList getUser() {//Array para obtener el user de la BD
         return user;
     }
     
-    private UIStore() {
+    public UIStore() {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
@@ -68,7 +59,6 @@ public class UIStore extends javax.swing.JFrame {
         menProducts = new javax.swing.JMenu();
         menShop = new javax.swing.JMenu();
         menProfile = new javax.swing.JMenu();
-        menUsers = new javax.swing.JMenu();
         menModifyProducts = new javax.swing.JMenu();
         logout = new javax.swing.JMenu();
 
@@ -136,17 +126,6 @@ public class UIStore extends javax.swing.JFrame {
         });
         jMenuBar2.add(menProfile);
 
-        menUsers.setBackground(new java.awt.Color(204, 204, 204));
-        menUsers.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 2, true));
-        menUsers.setForeground(new java.awt.Color(0, 0, 51));
-        menUsers.setText("USUARIOS");
-        menUsers.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                menUsersMouseClicked(evt);
-            }
-        });
-        jMenuBar2.add(menUsers);
-
         menModifyProducts.setBackground(new java.awt.Color(204, 204, 204));
         menModifyProducts.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 2, true));
         menModifyProducts.setForeground(new java.awt.Color(0, 0, 51));
@@ -189,7 +168,6 @@ public class UIStore extends javax.swing.JFrame {
         shop.setVisible(false);
         logo.setVisible(false);
         profile.setVisible(false);
-        users.setVisible(false);
         modifyProduct.setVisible(false);
         revalidate();
         repaint();
@@ -201,7 +179,6 @@ public class UIStore extends javax.swing.JFrame {
         shop.ShowTable(products.getProductsBuy());
         logo.setVisible(false);
         profile.setVisible(false);
-        users.setVisible(false);
         modifyProduct.setVisible(false);
         /*revalidate();
         repaint();*/
@@ -212,29 +189,16 @@ public class UIStore extends javax.swing.JFrame {
         shop.setVisible(false);
         logo.setVisible(false);
         profile.setVisible(true);profile.ShowUser(user);
-        users.setVisible(false);
         modifyProduct.setVisible(false);
         revalidate();
         repaint();
     }//GEN-LAST:event_menProfileMouseClicked
-
-    private void menUsersMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_menUsersMouseClicked
-        products.setVisible(false);
-        shop.setVisible(false);
-        logo.setVisible(false);
-        profile.setVisible(false);
-        users.setVisible(true);
-        modifyProduct.setVisible(false);
-        revalidate();
-        repaint();
-    }//GEN-LAST:event_menUsersMouseClicked
 
     private void menModifyProductsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_menModifyProductsMouseClicked
         products.setVisible(false);
         shop.setVisible(false);
         logo.setVisible(false);
         profile.setVisible(false);
-        users.setVisible(false);
         modifyProduct.setVisible(true);
         revalidate();
         repaint();
@@ -245,7 +209,7 @@ public class UIStore extends javax.swing.JFrame {
         login.setVisible(true);
         dispose();
     }//GEN-LAST:event_logoutMouseClicked
-
+    
     /**
      * @param args the command line arguments
      */
@@ -290,6 +254,5 @@ public class UIStore extends javax.swing.JFrame {
     private javax.swing.JMenu menProducts;
     private javax.swing.JMenu menProfile;
     private javax.swing.JMenu menShop;
-    private javax.swing.JMenu menUsers;
     // End of variables declaration//GEN-END:variables
 }

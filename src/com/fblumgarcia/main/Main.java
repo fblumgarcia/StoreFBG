@@ -21,8 +21,7 @@ public class Main {
      */
     public static void main(String[] args) {
         UILogin login=new UILogin();
-        login.setVisible(true);
-       
+        login.setVisible(true);       
     }
     
 }

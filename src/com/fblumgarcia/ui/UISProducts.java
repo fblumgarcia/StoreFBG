@@ -1,18 +1,13 @@
 package com.fblumgarcia.ui;
 
-import com.mysql.cj.jdbc.Blob;
-import java.awt.image.BufferedImage;
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.sql.SQLException;
+
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.imageio.ImageIO;
+
 import javax.swing.ImageIcon;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumnModel;
-import com.fblumgarcia.model.DataBase;
+import com.fblumgarcia.model.Product;
+import javax.swing.Icon;
 
     /**
      * <h1>UISProducts</h1>
@@ -117,64 +112,55 @@ public class UISProducts extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void searchProdActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchProdActionPerformed
-        DataBase sP = new DataBase();   //Llama la base de datos   
+        Product sP = new Product();   //Llama la base de datos   
         ArrayList prods=sP.SearchProduct(searchTF.getText().toUpperCase());//Ejecuta la busqueda
         DefaultTableModel model=(DefaultTableModel) tableInfo.getModel();//Se instancia la tabla
         model.setRowCount(0); //Se borra todas las filas
+        int l=0;//Para solucinar lo de la altura de las columnas
         for(int i=0;i<prods.size()/6;i++){
-            Object[] row=new Object[6];//Se crea una array de la fila
-            int k=0;//Es usado para ubicar dentro del array de la fila
-            for(int j=i*6;j<(6*(i+1))-1;j++){//El j ya que inicia en 0 6 12..., y termina en 4 10...
-                row[k]=(String) prods.get(j);//Se añade al array row de las 5 primeras columnas
-                k++;//Se da el incremento del k
-            }
-            //Se convierte el archivo blob a ImageIcon
-            Blob blob=(Blob) prods.get(6*(i+1)-1);
-            try {
-                int blobLength=(int) blob.length();
-                byte[] bytes=blob.getBytes(1, blobLength);
-                blob.free();
-                BufferedImage img = ImageIO.read(new ByteArrayInputStream(bytes));
-                ImageIcon icon = new ImageIcon(img); 
-                row[5]=icon;     
+            if(!((String) prods.get(3*((i*2)+1))).equals("0")){     //Para que se salte los que no hay stock         
+                Object[] row=new Object[6];//Se crea una array de la fila
+                int k=0;//Es usado para ubicar dentro del array de la fila
+                for(int j=i*6;j<(6*(i+1))-1;j++){//El j ya que inicia en 0 6 12..., y termina en 4 10...
+                    row[k]=(String) prods.get(j);//Se añade al array row de las 5 primeras columnas
+                    k++;//Se da el incremento del k
+                }           
+                row[5]=(Icon) prods.get(6*(i+1)-1);     
                 model.addRow(row);//Se añade a la fila dentro de la tabla
-                tableInfo.setRowHeight(i, 200);//Dar la altura de la imagen a la fila
-            } catch (SQLException | IOException ex) {
-                Logger.getLogger(UISProducts.class.getName()).log(Level.SEVERE, null, ex);
+                tableInfo.setRowHeight(l, 200);//Dar la altura de la imagen a la fila
+                l++;
             }
         }
     }//GEN-LAST:event_searchProdActionPerformed
     
-    
+    //Esta función añade y remueve del arrayList los productos que se añaden al carrito
     private void tableInfoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableInfoMouseClicked
          try {//Para hacer esperar la función
             Thread.sleep(1*200);
         }
-         catch (Exception e) {
+         catch (InterruptedException e) {
             System.out.println(e);
         }
         if(evt.getX()>800&&evt.getX()<980){//Obtiene la posición en que se da click si cumple da sobre el checkbox
             boolean comp=productsBuy.contains(tableInfo.getValueAt(evt.getY()/200, 1));//Retorna si el valor esta o no en el ArrayList
             if(tableInfo.getValueAt(evt.getY()/200, 6).equals(true)&&comp==false){//El primer valor da la posición de la fila en entero y que no este ese producto en la lista
+                productsBuy.add(tableInfo.getValueAt(evt.getY()/200, 0));
                 productsBuy.add(tableInfo.getValueAt(evt.getY()/200, 1));
                 productsBuy.add(tableInfo.getValueAt(evt.getY()/200, 2));
                 
             }else if(tableInfo.getValueAt(evt.getY()/200, 6).equals(false)&&comp==true){
+                productsBuy.remove(tableInfo.getValueAt(evt.getY()/200, 0));
                 productsBuy.remove(tableInfo.getValueAt(evt.getY()/200, 1));
                 productsBuy.remove(tableInfo.getValueAt(evt.getY()/200, 2));
             }     
         }
     }//GEN-LAST:event_tableInfoMouseClicked
 
+    //Es para enviar la info al carrito de compra por medio de Uistore
     public ArrayList getProductsBuy() {
         return productsBuy;
     }
-
-    public void setProductsBuy(String name,String price) {
-        productsBuy.remove(name);
-        productsBuy.remove(price);
-        System.out.println(productsBuy);
-    }
+    
     
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

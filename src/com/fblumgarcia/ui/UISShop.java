@@ -1,6 +1,8 @@
 package com.fblumgarcia.ui;
 
+import com.fblumgarcia.model.DataBase;
 import java.util.ArrayList;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumnModel;
  
@@ -47,14 +49,14 @@ public class UISShop extends javax.swing.JPanel {
 
             },
             new String [] {
-                "NOMBRE", "PRECIO", "CANTIDAD", "PAGO", "ELIMINAR"
+                "ID", "NOMBRE", "PRECIO", "CANTIDAD", "PAGO", "ELIMINAR"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Object.class, java.lang.Object.class, java.lang.Integer.class, java.lang.Integer.class, java.lang.Boolean.class
+                java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Integer.class, java.lang.Integer.class, java.lang.Boolean.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, true, false, true
+                false, false, false, true, false, true
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -89,17 +91,17 @@ public class UISShop extends javax.swing.JPanel {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 710, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(142, 142, 142)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addComponent(jLabel1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(totalLabel))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(221, 221, 221)
-                        .addComponent(buy)))
-                .addContainerGap(207, Short.MAX_VALUE))
+                        .addGap(18, 18, 18)
+                        .addComponent(totalLabel)
+                        .addGap(67, 67, 67))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(buy)
+                        .addGap(97, 97, 97))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -113,19 +115,25 @@ public class UISShop extends javax.swing.JPanel {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel1)
                             .addComponent(totalLabel))
-                        .addGap(113, 113, 113)
+                        .addGap(43, 43, 43)
                         .addComponent(buy)))
                 .addContainerGap(146, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
     
     private void buyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buyActionPerformed
-        ArrayList productsToBuy=new ArrayList();    
+        ArrayList productsToBuy=new ArrayList();   
+        DataBase db=new DataBase();
         for(int i=0;i<tableToBuy.getRowCount();i++){//Recorre la tabla
-            if(tableToBuy.getValueAt(i, 4).equals(true)){//Si esta seleccionado la fila
-                productsToBuy.add(tableToBuy.getValueAt(i, 0));//Añade el nombre
-                productsToBuy.add( tableToBuy.getValueAt(i, 2));
-                productsToBuy.add( tableToBuy.getValueAt(i, 3));
+            if(tableToBuy.getValueAt(i, 5).equals(true)){//Si esta seleccionado la fila
+                boolean checkBuy=db.UpdateBuy(((String) tableToBuy.getValueAt(i, 0)), ((String) String.valueOf(tableToBuy.getValueAt(i, 3))));
+                    if(checkBuy==false){
+                        JOptionPane.showMessageDialog(null,"No se pudo realizar la compra de: "+((String) tableToBuy.getValueAt(i, 1)));
+                    }else{
+                        productsToBuy.add(tableToBuy.getValueAt(i, 1));//Añade el nombre
+                        productsToBuy.add( tableToBuy.getValueAt(i, 3));
+                        productsToBuy.add( tableToBuy.getValueAt(i, 4));
+                    }
             }        
         }
         System.out.println(productsToBuy);
@@ -150,16 +158,16 @@ public class UISShop extends javax.swing.JPanel {
         }
         DefaultTableModel model=(DefaultTableModel) tableToBuy.getModel();//Se instancia la tabla
         model.setRowCount(0); //Se borra todas las filas
-        for(int i=0;i<products.size()/2;i++){//Para recorrer todo el array
-            Object[] row=new Object[5];//Se inicia la fila
+        for(int i=0;i<products.size()/3;i++){//Para recorrer todo el array
+            Object[] row=new Object[6];//Se inicia la fila
             int k=0;//Para recorrer el row
-            for(int j=i*2;j<(2*(i+1));j++){//El j ya que inicia en 0 2 4..., y termina en 1 3...
+            for(int j=i*3;j<(3*(i+1));j++){//El j ya que inicia en 0 3 5..., y termina en 1 3...
                 row[k]= products.get(j);
                 k++;
             }
-            row[2]=1;
-            row[3]=row[1];
-            row[4]=true;
+            row[3]=1;
+            row[4]=row[2];
+            row[5]=true;
             model.addRow(row);
             tableToBuy.setRowHeight(i, 50);//Dar la altura de la imagen a la fila
         }
@@ -170,10 +178,10 @@ public class UISShop extends javax.swing.JPanel {
         int total=0;//Se define una variable total que es la suma de todos los productos
         
         for(int i=0;i<tableToBuy.getRowCount();i++){
-            if(tableToBuy.getValueAt(i, 4).equals(true)){//Sólo los que están seleccionados hace la suma
-                int value=(Integer.valueOf((String) tableToBuy.getValueAt(i, 1))*((int) tableToBuy.getValueAt(i, 2)));
+            if(tableToBuy.getValueAt(i, 5).equals(true)){//Sólo los que están seleccionados hace la suma
+                int value=(Integer.valueOf((String) tableToBuy.getValueAt(i, 2))*((int) tableToBuy.getValueAt(i, 3)));
                 total=total+value;
-                tableToBuy.setValueAt(String.valueOf(value), i,3);
+                tableToBuy.setValueAt(String.valueOf(value), i,4);
             }            
         }
         totalLabel.setText(String.valueOf(total));
