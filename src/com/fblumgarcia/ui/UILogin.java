@@ -131,11 +131,12 @@ public class UILogin extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null,"Por favor ingrese todos los datos");
         }else{
             User usLog=new User(user.getText(),new String(passw1));//llama clase de user        
-            JOptionPane.showMessageDialog(null,usLog.Login()[2]);
             if(usLog.Login()[0]!=null){//Si se ha encontrado el usuario 
                 store=new UIStore(usLog.Login()[0],usLog.Login()[1],usLog.Login()[3]);
                 store.setVisible(true);
                 dispose();
+            }else{
+                JOptionPane.showMessageDialog(null,usLog.Login()[2]);
             }
         }
     }//GEN-LAST:event_loginActionPerformed

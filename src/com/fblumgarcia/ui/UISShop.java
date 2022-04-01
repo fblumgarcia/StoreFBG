@@ -132,12 +132,18 @@ public class UISShop extends javax.swing.JPanel {
                     }else{
                         productsToBuy.add(tableToBuy.getValueAt(i, 1));//Añade el nombre
                         productsToBuy.add( tableToBuy.getValueAt(i, 3));
+                        productsToBuy.add( tableToBuy.getValueAt(i, 2));
                         productsToBuy.add( tableToBuy.getValueAt(i, 4));
                     }
             }        
         }
-        System.out.println(productsToBuy);
-        System.out.println(user);//Se crea unr recibo
+        if(productsToBuy.isEmpty()==true){
+            JOptionPane.showMessageDialog(null,"No se puede facturar nada");
+        }else{
+            UISSRecipe rec=new UISSRecipe();
+            rec.setVisible(true);
+            rec.ShowInfo(user, productsToBuy);
+        }
     }//GEN-LAST:event_buyActionPerformed
     
     private void tableToBuyMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableToBuyMouseClicked
@@ -145,8 +151,9 @@ public class UISShop extends javax.swing.JPanel {
     }//GEN-LAST:event_tableToBuyMouseClicked
     
     ArrayList user=new ArrayList();
-    public void ShowUser(ArrayList user){//Función para obtener la info del usuario desde el UIStore
+    public ArrayList ShowUser(ArrayList user){//Función para obtener la info del usuario desde el UIStore
         this.user=user;
+        return this.user;
     }
     
     public void ShowTable(ArrayList products){

@@ -102,6 +102,7 @@ public class DataBase {
             int nq=rs.getInt("quantity")-(Integer.parseInt(quantity));
             if(nq>=0){
                 stmt.executeUpdate("UPDATE products SET quantity='"+nq+"' WHERE id='"+id+"'");
+                isUpdate=true;
             }
             
         }  catch (SQLException ex) {

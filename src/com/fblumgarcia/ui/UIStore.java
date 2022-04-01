@@ -30,7 +30,7 @@ public class UIStore extends javax.swing.JFrame {
         if(userType.equals("CLIENTE")){//Si el usuario es cliente oculta la opción Users y modificar Productos
             menModifyProducts.setVisible(false);
         }
-        lblWelc.setText("Bienvenido "+name+" a STOREFBG");//Da el mensaje de bienvenida
+        lblWelc.setText("Bienvenid@ "+name+" a STOREFBG");//Da el mensaje de bienvenida
         //falta el logo
         user.add(name);user.add(email);
     }
@@ -70,15 +70,16 @@ public class UIStore extends javax.swing.JFrame {
         logo.setForeground(new java.awt.Color(0, 0, 51));
 
         lblWelc.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        lblWelc.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
 
         javax.swing.GroupLayout logoLayout = new javax.swing.GroupLayout(logo);
         logo.setLayout(logoLayout);
         logoLayout.setHorizontalGroup(
             logoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(logoLayout.createSequentialGroup()
-                .addGap(232, 232, 232)
-                .addComponent(lblWelc, javax.swing.GroupLayout.PREFERRED_SIZE, 291, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(473, Short.MAX_VALUE))
+                .addGap(83, 83, 83)
+                .addComponent(lblWelc, javax.swing.GroupLayout.PREFERRED_SIZE, 791, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(122, Short.MAX_VALUE))
         );
         logoLayout.setVerticalGroup(
             logoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -176,7 +177,7 @@ public class UIStore extends javax.swing.JFrame {
     private void menShopMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_menShopMouseClicked
         products.setVisible(false);
         shop.setVisible(true);
-        shop.ShowTable(products.getProductsBuy());
+        shop.ShowTable(products.getProductsBuy());shop.ShowUser(user);
         logo.setVisible(false);
         profile.setVisible(false);
         modifyProduct.setVisible(false);
